@@ -255,25 +255,43 @@ EndlessRunner.Game.prototype = {
 		this.hero.animations.play("moveHero", 10, true);
 
 		// ADDING A RING
-		this.ring1 = game.add.sprite(68, 424, "imageRing");
+		this.ring1 = game.add.sprite(60, 424, "imageRing");
 		this.ring1.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring1.animations.play("moveRing", 13, true);
 		this.ring1.width = 42;
 		this.ring1.height = 42;
+		this.ring1shadow = game.add.graphics(0, 0);
+		this.ring1shadow.lineStyle(0);
+		this.ring1shadow.beginFill(0x000000, 0.10);
+		this.ring1shadow.drawEllipse(32, 78, 20, 10);
+		this.ring1shadow.endFill();
+		this.ring1.addChild(this.ring1shadow);
 
 		// ADDING A RING
-		this.ring2 = game.add.sprite(191, 373, "imageRing");
+		this.ring2 = game.add.sprite(200, 373, "imageRing");
 		this.ring2.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring2.animations.play("moveRing", 13, true);
 		this.ring2.width = 35;
 		this.ring2.height = 35;
+		this.ring2shadow = game.add.graphics(0, 0);
+		this.ring2shadow.lineStyle(0);
+		this.ring2shadow.beginFill(0x000000, 0.10);
+		this.ring2shadow.drawEllipse(32, 78, 20, 10);
+		this.ring2shadow.endFill();
+		this.ring2.addChild(this.ring2shadow);
 
 		// ADDING A RING
-		this.ring3 = game.add.sprite(120, 324, "imageRing");
+		this.ring3 = game.add.sprite(149, 314, "imageRing");
 		this.ring3.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring3.animations.play("moveRing", 13, true);
 		this.ring3.width = 22;
 		this.ring3.height = 22;
+		this.ring3shadow = game.add.graphics(0, 0);
+		this.ring3shadow.lineStyle(0);
+		this.ring3shadow.beginFill(0x000000, 0.10);
+		this.ring3shadow.drawEllipse(32, 78, 20, 10);
+		this.ring3shadow.endFill();
+		this.ring3.addChild(this.ring3shadow);
 
 		// ADDING THE SOUND ON GAME ICON
 		this.buttonSoundOnGameShadow = game.add.sprite(265, 10, "imageSoundOn");
