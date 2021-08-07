@@ -152,6 +152,7 @@ EndlessRunner.Game = function (game)
 	this.roadRight = null;
 	this.roadMask = null;
 	this.hero = null;
+	this.heroShadow = null;
 	this.ring1 = null;
 	this.ring1shadow = null;
 	this.ring2 = null;
@@ -194,6 +195,7 @@ EndlessRunner.Game.prototype = {
 		this.roadRight = null;
 		this.roadMask = null;
 		this.hero = null;
+		this.heroShadow = null;
 		this.ring1 = null;
 		this.ring1shadow = null;
 		this.ring2 = null;
@@ -261,8 +263,15 @@ EndlessRunner.Game.prototype = {
 		this.roadRight.scale.x = this.roadRight.scale.x * -1;
 		this.roadRight.mask = this.roadMask;
 
+		// ADDING THE HERO SHADOW
+		this.heroShadow = game.add.graphics(159, 563);
+		this.heroShadow.lineStyle(0);
+		this.heroShadow.beginFill(0x000000, 0.10);
+		this.heroShadow.drawEllipse(0, 0, 25, 15);
+		this.heroShadow.endFill();
+
 		// ADDING THE HERO
-		this.hero = game.add.sprite(120, 454, "imageHero");
+		this.hero = game.add.sprite(121, 454, "imageHero");
 		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
 		this.hero.animations.play("moveHero", 10, true);
 
@@ -293,7 +302,7 @@ EndlessRunner.Game.prototype = {
 		this.ring2.addChild(this.ring2shadow);
 
 		// ADDING A RING
-		this.ring3 = game.add.sprite(149, 314, "imageRing");
+		this.ring3 = game.add.sprite(148.5, 314, "imageRing");
 		this.ring3.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring3.animations.play("moveRing", 13, true);
 		this.ring3.width = 22;
