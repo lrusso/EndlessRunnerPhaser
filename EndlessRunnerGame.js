@@ -454,7 +454,7 @@ EndlessRunner.Game.prototype = {
 		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
 		this.hero.animations.play("moveHero", 12, true);
 		game.physics.arcade.enable(this.hero);
-		this.hero.body.setSize(45, 40, 15, 75);
+		this.hero.body.setSize(45, 30, 15, 75);
 
 		// ADDING THE SOUND ON GAME ICON
 		this.buttonSoundOnGameShadow = game.add.sprite(265, 10, "imageSoundOn");
