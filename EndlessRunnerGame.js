@@ -907,6 +907,7 @@ EndlessRunner.Game.prototype = {
 			this.roadLeft.animations.stop();
 			this.roadRight.animations.stop();
 			this.backgroundOceanImage.animations.stop();
+			game.tweens.pauseAll();
 
 			// LOADING THE USER SCORE
 			this.gameOverScoreValue.text = this.scoreValue;
@@ -999,7 +1000,7 @@ EndlessRunner.Game.prototype = {
 
 	restartGame: function()
 		{
-		// RESTARTING THE STATE
+		// RESTARTING THE GAME STATE
 		this.state.restart();
 		},
 
