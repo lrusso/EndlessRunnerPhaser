@@ -32,8 +32,8 @@ EndlessRunner.Preloader.prototype = {
 		// SETTING THE MAXPOINTERS VALUE
 		this.input.maxPointers = 1;
 
-		// SETTING THE ROUNDPIXELS PROPERTY TO FALSE (IMPORTANT, DO NOT MODIFY)
-		this.game.renderer.renderSession.roundPixels = false;
+		// SETTING THE ROUNDPIXELS PROPERTY TO TRUE (IMPORTANT, DO NOT MODIFY)
+		this.game.renderer.renderSession.roundPixels = true;
 
 		// SCALING THE CANVAS SIZE FOR THE GAME
 		var scaleX = window.innerWidth / 320;
@@ -184,6 +184,7 @@ EndlessRunner.Game = function (game)
 	this.swipeCoordX = null;
 	this.swipeCoordX2 = null;
 	this.swipeMinDistance = null;
+	this.objectsMaxSpeed = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -234,6 +235,7 @@ EndlessRunner.Game.prototype = {
 		this.swipeCoordX = null;
 		this.swipeCoordX2 = null;
 		this.swipeMinDistance = 25;
+		this.objectsMaxSpeed = 3;
 		},
 
 	create: function()
@@ -288,18 +290,6 @@ EndlessRunner.Game.prototype = {
 		this.roadRight.scale.x = this.roadRight.scale.x * -1;
 		this.roadRight.mask = this.roadMask;
 
-		// ADDING THE HERO SHADOW
-		this.heroShadow = game.add.graphics(159, 563);
-		this.heroShadow.lineStyle(0);
-		this.heroShadow.beginFill(0x000000, 0.10);
-		this.heroShadow.drawEllipse(0, 0, 25, 15);
-		this.heroShadow.endFill();
-
-		// ADDING THE HERO
-		this.hero = game.add.sprite(121, 454, "imageHero");
-		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
-		this.hero.animations.play("moveHero", 12, true);
-
 		// ADDING A RING
 		this.ring1 = game.add.sprite(60, 424, "imageRing");
 		this.ring1.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
@@ -314,11 +304,11 @@ EndlessRunner.Game.prototype = {
 		this.ring1.addChild(this.ring1shadow);
 
 		// ADDING A RING
-		this.ring2 = game.add.sprite(200, 373, "imageRing");
+		this.ring2 = game.add.sprite(148.5, 314, "imageRing");
 		this.ring2.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring2.animations.play("moveRing", 13, true);
-		this.ring2.width = 35;
-		this.ring2.height = 35;
+		this.ring2.width = 22;
+		this.ring2.height = 22;
 		this.ring2shadow = game.add.graphics(0, 0);
 		this.ring2shadow.lineStyle(0);
 		this.ring2shadow.beginFill(0x000000, 0.10);
@@ -327,17 +317,29 @@ EndlessRunner.Game.prototype = {
 		this.ring2.addChild(this.ring2shadow);
 
 		// ADDING A RING
-		this.ring3 = game.add.sprite(148.5, 314, "imageRing");
+		this.ring3 = game.add.sprite(200, 373, "imageRing");
 		this.ring3.animations.add("moveRing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 		this.ring3.animations.play("moveRing", 13, true);
-		this.ring3.width = 22;
-		this.ring3.height = 22;
+		this.ring3.width = 35;
+		this.ring3.height = 35;
 		this.ring3shadow = game.add.graphics(0, 0);
 		this.ring3shadow.lineStyle(0);
 		this.ring3shadow.beginFill(0x000000, 0.10);
 		this.ring3shadow.drawEllipse(32, 78, 20, 10);
 		this.ring3shadow.endFill();
 		this.ring3.addChild(this.ring3shadow);
+
+		// ADDING THE HERO SHADOW
+		this.heroShadow = game.add.graphics(159, 563);
+		this.heroShadow.lineStyle(0);
+		this.heroShadow.beginFill(0x000000, 0.10);
+		this.heroShadow.drawEllipse(0, 0, 25, 15);
+		this.heroShadow.endFill();
+
+		// ADDING THE HERO
+		this.hero = game.add.sprite(121, 454, "imageHero");
+		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
+		this.hero.animations.play("moveHero", 12, true);
 
 		// ADDING THE SOUND ON GAME ICON
 		this.buttonSoundOnGameShadow = game.add.sprite(265, 10, "imageSoundOn");
@@ -433,6 +435,9 @@ EndlessRunner.Game.prototype = {
 				this.moveRight();
 				}
 			}
+
+		// MOVING THE RINGS
+		this.moveRings();
 		},
 
 	moveLeft: function()
@@ -470,6 +475,66 @@ EndlessRunner.Game.prototype = {
 				}
 			}
 		},
+
+	moveRings: function()
+		{
+		// GETTING HOW FAR THE FIRST RING ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
+		var ring1Factor = (this.ring1.position.y * 100 / game.height) / 100;
+
+		// MOVING AND RESIZING THE FIRST RING
+		this.ring1.position.x = this.ring1.position.x - (1.45 * ring1Factor);
+		this.ring1.position.y = this.ring1.position.y + (this.objectsMaxSpeed * ring1Factor);
+		this.ring1.width = this.ring1.width + (0.5 * ring1Factor);
+		this.ring1.height = this.ring1.height + (0.5 * ring1Factor);
+
+		// GETTING HOW FAR THE SECOND RING ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
+		var ring2Factor = (this.ring2.position.y * 100 / game.height) / 100;
+
+		// MOVING AND RESIZING THE SECOND RING
+		this.ring2.position.x = this.ring2.position.x - (0.27 * ring2Factor);
+		this.ring2.position.y = this.ring2.position.y + (this.objectsMaxSpeed * ring2Factor);
+		this.ring2.width = this.ring2.width + (0.55 * ring2Factor);
+		this.ring2.height = this.ring2.height + (0.55 * ring2Factor);
+
+		// GETTING HOW FAR THE THIRD RING ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
+		var ring3Factor = (this.ring3.position.y * 100 / game.height) / 100;
+
+		// MOVING AND RESIZING THE THIRD RING
+		this.ring3.position.x = this.ring3.position.x + (0.90 * ring3Factor);
+		this.ring3.position.y = this.ring3.position.y + (this.objectsMaxSpeed * ring3Factor);
+		this.ring3.width = this.ring3.width + (0.55 * ring3Factor);
+		this.ring3.height = this.ring3.height + (0.55 * ring3Factor);
+
+		// CHECKING IF THE FIRST RING IS OUT OF THE SCREEN
+		if (this.ring1.position.y>game.height)
+			{
+			// MOVING THE FIRST RING TO THE INITIAL POSITION
+			this.ring1.position.x = 135;
+			this.ring1.position.y = 300;
+			this.ring1.width = 10;
+			this.ring1.height = 10;
+			}
+
+		// CHECKING IF THE SECOND RING IS OUT OF THE SCREEN
+		if (this.ring2.position.y>game.height)
+			{
+			// MOVING THE SECOND RING TO THE INITIAL POSITION
+			this.ring2.position.x = 155;
+			this.ring2.position.y = 300;
+			this.ring2.width = 10;
+			this.ring2.height = 10;
+			}
+
+		// CHECKING IF THE THIRD RING IS OUT OF THE SCREEN
+		if (this.ring3.position.y>game.height)
+			{
+			// MOVING THE THIRD RING TO THE INITIAL POSITION
+			this.ring3.position.x = 172;
+			this.ring3.position.y = 300;
+			this.ring3.width = 10;
+			this.ring3.height = 10;
+			}
+		}
 	};
 
 // WORKAROUND FOR IOS - UPDATING EVERY 200 MS THE GAME STATE ACCORDING THE DOCUMENT VISIBILITY AND DEVICE TYPE
