@@ -171,6 +171,7 @@ EndlessRunner.Game = function (game)
 	this.ring2shadow = null;
 	this.ring3 = null;
 	this.ring3shadow = null;
+	this.scoreValue = null;
 	this.scoreBackground = null;
 	this.scoreIcon = null;
 	this.scoreIconShadow = null;
@@ -222,6 +223,7 @@ EndlessRunner.Game.prototype = {
 		this.ring2shadow = null;
 		this.ring3 = null;
 		this.ring3shadow = null;
+		this.scoreValue = 0;
 		this.scoreBackground = null;
 		this.scoreIcon = null;
 		this.scoreIconShadow = null;
@@ -369,12 +371,12 @@ EndlessRunner.Game.prototype = {
 		this.scoreIcon = game.add.sprite(5, 17.5, "imageHighScore");
 
 		// ADDING THE SCORE LABEL SHADOW
-		this.scoreLabelShadow = game.add.bitmapText(37, 19, "ArialBlackWhite", "50", 25);
+		this.scoreLabelShadow = game.add.bitmapText(37, 19, "ArialBlackWhite", "0", 25);
 		this.scoreLabelShadow.height = 30;
 		this.scoreLabelShadow.tint = 0x000000;
 
 		// ADDING THE SCORE LABEL
-		this.scoreLabel = game.add.bitmapText(35, 17, "ArialBlackWhite", "50", 25);
+		this.scoreLabel = game.add.bitmapText(35, 17, "ArialBlackWhite", "0", 25);
 		this.scoreLabel.height = 30;
 
 		// ADDING THE CURSOR KEYS LISTENER
@@ -554,11 +556,90 @@ EndlessRunner.Game.prototype = {
 
 	collectRing: function(player, ring)
 		{
-		// HIDING THE RING
-		ring.visible = false;
+		// CHECKING IF THE RING IS WITHIN RANGE TO TAKE IT IN ORDER TO PREVENT A DOUBLE CALLBACK
+		if (ring.position.y>450)
+			{
+			// HIDING THE RING
+			ring.visible = false;
 
-		// MOVING THE RING OUT OF THE SCREEN
-		ring.position.y = game.height;
+			// MOVING THE RING OUT OF THE SCREEN
+			ring.position.y = game.height;
+
+			// UPDATING THE SCORE
+			this.updateScore(this.scoreValue + 1);
+			}
+		},
+
+	updateScore: function(newScore)
+		{
+		// CHECKING IF THE USER HITS THE MAXIMUM SCORE POSSIBLE
+		if (newScore>999)
+			{
+			// UPDATING THE USER SCORE
+			newScore = 999;
+			}
+
+		// UPDATING THE SCORE WITH THE NEW VALUE
+		this.scoreValue = newScore;
+
+		// UPDATING THE SCORE WITH THE NEW VALUE
+		this.scoreLabel.setText(newScore);
+
+		// UPDATING THE SCORE SHADOW WITH THE NEW VALUE
+		this.scoreLabelShadow.setText(newScore);
+
+		// CHECKING IF THE CURRENT SCORE HITS THE HIGH SCORE
+		if (this.scoreValue>this.getHighscore())
+			{
+			// SETTING THE NEW HIGHSCORE
+			this.setHighscore(this.scoreValue);
+			}
+		},
+
+	getHighscore: function()
+		{
+		try
+			{
+			var name = "highscoreendlessrunnerphaser";
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(";");
+
+			for(var i=0;i < ca.length;i++)
+				{
+				var c = ca[i];
+				while (c.charAt(0)==" ")
+					{
+					c = c.substring(1,c.length);
+					}
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+			}
+		catch(err)
+			{
+			}
+
+		return "0";
+		},
+
+	setHighscore: function(newHighscore)
+		{
+		try
+			{
+			var name = "highscoreendlessrunnerphaser";
+			var value = newHighscore;
+			var days = 999;
+			var expires = "";
+			if (days)
+				{
+				var date = new Date();
+				date.setTime(date.getTime() + (days*24*60*60*1000));
+				expires = "; expires=" + date.toUTCString();
+				}
+			document.cookie = name + "=" + (value || "")  + expires + "; Secure; path=/";
+			}
+			catch(err)
+			{
+			}
 		},
 
 	render: function()
