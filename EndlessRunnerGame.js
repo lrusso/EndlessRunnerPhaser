@@ -21,7 +21,7 @@ backgroundGradientCanvas.getContext("2d").fillStyle = backgroundGradient;
 backgroundGradientCanvas.getContext("2d").fillRect(0, 0, backgroundGradientCanvas.width, backgroundGradientCanvas.height);
 var backgroundGradientData = backgroundGradientCanvas.toDataURL("image/png");
 
-var EndlessRunner = {};
+var EndlessRunner = {showDebug: false};
 
 EndlessRunner.Preloader = function(){};
 
@@ -296,6 +296,8 @@ EndlessRunner.Game.prototype = {
 		this.ring1.animations.play("moveRing", 13, true);
 		this.ring1.width = 42;
 		this.ring1.height = 42;
+		game.physics.arcade.enable(this.ring1);
+		this.ring1.body.setSize(65, 65, -2.5, 5);
 		this.ring1shadow = game.add.graphics(0, 0);
 		this.ring1shadow.lineStyle(0);
 		this.ring1shadow.beginFill(0x000000, 0.10);
@@ -309,6 +311,8 @@ EndlessRunner.Game.prototype = {
 		this.ring2.animations.play("moveRing", 13, true);
 		this.ring2.width = 22;
 		this.ring2.height = 22;
+		game.physics.arcade.enable(this.ring2);
+		this.ring2.body.setSize(65, 65, -1, 5);
 		this.ring2shadow = game.add.graphics(0, 0);
 		this.ring2shadow.lineStyle(0);
 		this.ring2shadow.beginFill(0x000000, 0.10);
@@ -322,6 +326,8 @@ EndlessRunner.Game.prototype = {
 		this.ring3.animations.play("moveRing", 13, true);
 		this.ring3.width = 35;
 		this.ring3.height = 35;
+		game.physics.arcade.enable(this.ring3);
+		this.ring3.body.setSize(65, 65, 0, 5);
 		this.ring3shadow = game.add.graphics(0, 0);
 		this.ring3shadow.lineStyle(0);
 		this.ring3shadow.beginFill(0x000000, 0.10);
@@ -340,6 +346,8 @@ EndlessRunner.Game.prototype = {
 		this.hero = game.add.sprite(121, 454, "imageHero");
 		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
 		this.hero.animations.play("moveHero", 12, true);
+		game.physics.arcade.enable(this.hero);
+		this.hero.body.setSize(45, 55, 15, 75);
 
 		// ADDING THE SOUND ON GAME ICON
 		this.buttonSoundOnGameShadow = game.add.sprite(265, 10, "imageSoundOn");
@@ -438,6 +446,11 @@ EndlessRunner.Game.prototype = {
 
 		// MOVING THE RINGS
 		this.moveRings();
+
+		// SETTING THE FUNCTION THAT WILL BE CALLED WHEN THE HERO OVERLAPS A RING
+		game.physics.arcade.overlap(this.hero, this.ring1, this.collectRing, null, this);
+		game.physics.arcade.overlap(this.hero, this.ring2, this.collectRing, null, this);
+		game.physics.arcade.overlap(this.hero, this.ring3, this.collectRing, null, this);
 		},
 
 	moveLeft: function()
@@ -513,6 +526,7 @@ EndlessRunner.Game.prototype = {
 			this.ring1.position.y = 300;
 			this.ring1.width = 10;
 			this.ring1.height = 10;
+			this.ring1.visible = true;
 			}
 
 		// CHECKING IF THE SECOND RING IS OUT OF THE SCREEN
@@ -523,6 +537,7 @@ EndlessRunner.Game.prototype = {
 			this.ring2.position.y = 300;
 			this.ring2.width = 10;
 			this.ring2.height = 10;
+			this.ring2.visible = true;
 			}
 
 		// CHECKING IF THE THIRD RING IS OUT OF THE SCREEN
@@ -533,6 +548,31 @@ EndlessRunner.Game.prototype = {
 			this.ring3.position.y = 300;
 			this.ring3.width = 10;
 			this.ring3.height = 10;
+			this.ring3.visible = true;
+			}
+		},
+
+	collectRing: function(player, ring)
+		{
+		// HIDING THE RING
+		ring.visible = false;
+
+		// MOVING THE RING OUT OF THE SCREEN
+		ring.position.y = game.height;
+		},
+
+	render: function()
+		{
+		// CHECKING IF THE GAME IS RUNNING IN DEBUG MODE
+		if(EndlessRunner.showDebug==true)
+			{
+			// SHOWING THE HERO BODY SIZE
+			game.debug.body(this.hero);
+
+			// SHOWING ALL THE RINGS BODY SIZE
+			game.debug.body(this.ring1);
+			game.debug.body(this.ring2);
+			game.debug.body(this.ring3);
 			}
 		}
 	};
