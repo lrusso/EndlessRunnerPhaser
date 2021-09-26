@@ -181,6 +181,9 @@ EndlessRunner.Game = function (game)
 	this.cursors = null;
 	this.keyA = null;
 	this.keyD = null;
+	this.swipeCoordX = null;
+	this.swipeCoordX2 = null;
+	this.swipeMinDistance = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -228,6 +231,9 @@ EndlessRunner.Game.prototype = {
 		this.cursors = null;
 		this.keyA = null;
 		this.keyD = null;
+		this.swipeCoordX = null;
+		this.swipeCoordX2 = null;
+		this.swipeMinDistance = 25;
 		},
 
 	create: function()
@@ -367,6 +373,34 @@ EndlessRunner.Game.prototype = {
 		// REGISTERING THE 'A' AND 'D' KEYS
 		this.keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE USER STARTS TOUCHING THE SCREEN
+		game.input.onDown.add(function(pointer)
+			{
+			// UPDATING THE INITIAL X COORDINATE
+			this.swipeCoordX = pointer.clientX;
+			}, this);
+
+		// SETTING WHAT WILL HAPPEN WHEN THE USER STOPS TOUCHING THE SCREEN
+		game.input.onUp.add(function(pointer)
+			{
+			// UPDATING THE FINAL X COORDINATE
+			this.swipeCoordX2 = pointer.clientX;
+
+			// CHECKING IF THE USER SWIPE TO THE LEFT
+			if(this.swipeCoordX2 < this.swipeCoordX - this.swipeMinDistance)
+				{
+				// MOVING THE HERO TO THE LEFT
+				this.moveLeft();
+				}
+
+			// CHECKING IF THE USER SWIPE TO THE RIGHT
+			else if(this.swipeCoordX2 > this.swipeCoordX + this.swipeMinDistance)
+				{
+				// MOVING THE HERO TO THE RIGHT
+				this.moveRight();
+				}
+			}, this);
 		},
 
 	update: function()
@@ -388,34 +422,54 @@ EndlessRunner.Game.prototype = {
 			// CHECKING IF THE USER IS PRESSING THE LEFT KEY
 			if (moveLeft==true)
 				{
-				// CHECKING IF THE HERO IS NOT AT THE LEFT CORNER
-				if (this.hero.position.x>12)
-					{
-					// MOVING THE HERO TO THE LEFT
-					game.add.tween(this.hero).to({x: this.hero.position.x - 109}, 275, Phaser.Easing.Linear.None, true);
-					game.add.tween(this.heroShadow).to({x:  this.heroShadow.position.x - 109}, 275, Phaser.Easing.Linear.None, true);
-
-					// SETTING THAT THE HERO IS MOVING
-					this.moving = true;
-					}
+				// MOVING THE HERO TO THE LEFT
+				this.moveLeft();
 				}
 
 			// CHECKING IF THE USER IS PRESSING THE RIGHT KEY
 			if (moveRight==true)
 				{
-				// CHECKING IF THE HERO IS NOT AT THE RIGHT CORNER
-				if (this.hero.position.x<230)
-					{
-					// MOVING THE HERO TO THE RIGHT
-					game.add.tween(this.hero).to({x: this.hero.position.x + 109}, 275, Phaser.Easing.Linear.None, true);
-					game.add.tween(this.heroShadow).to({x:  this.heroShadow.position.x + 109}, 275, Phaser.Easing.Linear.None, true);
-
-					// SETTING THAT THE HERO IS MOVING
-					this.moving = true;
-					}
+				// MOVING THE HERO TO THE RIGHT
+				this.moveRight();
 				}
 			}
-		}
+		},
+
+	moveLeft: function()
+		{
+		// CHECKING IF THE HERO IS NOT MOVING
+		if (this.moving==false)
+			{
+			// CHECKING IF THE HERO IS NOT AT THE LEFT CORNER
+			if (this.hero.position.x==121 || this.hero.position.x==230)
+				{
+				// MOVING THE HERO TO THE LEFT
+				game.add.tween(this.hero).to({x: this.hero.position.x - 109}, 275, Phaser.Easing.Linear.None, true);
+				game.add.tween(this.heroShadow).to({x:  this.heroShadow.position.x - 109}, 275, Phaser.Easing.Linear.None, true);
+
+				// SETTING THAT THE HERO IS MOVING
+				this.moving = true;
+				}
+			}
+		},
+
+	moveRight: function()
+		{
+		// CHECKING IF THE HERO IS NOT MOVING
+		if (this.moving==false)
+			{
+			// CHECKING IF THE HERO IS NOT AT THE RIGHT CORNER
+			if (this.hero.position.x==12 || this.hero.position.x==121)
+				{
+				// MOVING THE HERO TO THE RIGHT
+				game.add.tween(this.hero).to({x: this.hero.position.x + 109}, 275, Phaser.Easing.Linear.None, true);
+				game.add.tween(this.heroShadow).to({x:  this.heroShadow.position.x + 109}, 275, Phaser.Easing.Linear.None, true);
+
+				// SETTING THAT THE HERO IS MOVING
+				this.moving = true;
+				}
+			}
+		},
 	};
 
 // WORKAROUND FOR IOS - UPDATING EVERY 200 MS THE GAME STATE ACCORDING THE DOCUMENT VISIBILITY AND DEVICE TYPE
