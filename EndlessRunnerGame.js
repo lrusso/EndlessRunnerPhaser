@@ -191,6 +191,8 @@ EndlessRunner.Game = function (game)
 	this.swipeCoordX2 = null;
 	this.swipeMinDistance = null;
 	this.objectsMaxSpeed = null;
+	this.isGameOver = null;
+	this.splashEnded = false;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
@@ -246,6 +248,8 @@ EndlessRunner.Game.prototype = {
 		this.swipeCoordX2 = null;
 		this.swipeMinDistance = 25;
 		this.objectsMaxSpeed = 3;
+		this.isGameOver = false;
+		this.splashEnded = false;
 		},
 
 	create: function()
@@ -313,6 +317,7 @@ EndlessRunner.Game.prototype = {
 		this.ring1shadow.drawEllipse(32, 78, 20, 10);
 		this.ring1shadow.endFill();
 		this.ring1.addChild(this.ring1shadow);
+		this.ring1.visible = false;
 
 		// ADDING A RING
 		this.ring2 = game.add.sprite(-100, -100, "imageRing");
@@ -327,6 +332,7 @@ EndlessRunner.Game.prototype = {
 		this.ring2shadow.drawEllipse(32, 78, 20, 10);
 		this.ring2shadow.endFill();
 		this.ring2.addChild(this.ring2shadow);
+		this.ring2.visible = false;
 
 		// ADDING A RING
 		this.ring3 = game.add.sprite(-100, -100, "imageRing");
@@ -341,6 +347,7 @@ EndlessRunner.Game.prototype = {
 		this.ring3shadow.drawEllipse(32, 78, 20, 10);
 		this.ring3shadow.endFill();
 		this.ring3.addChild(this.ring3shadow);
+		this.ring3.visible = false;
 
 		// ADDING AN ENEMY
 		this.enemy1 = game.add.sprite(-100, -100, "imageEnemy");
@@ -429,6 +436,9 @@ EndlessRunner.Game.prototype = {
 		this.scoreLabel = game.add.bitmapText(35, 17, "ArialBlackWhite", "0", 25);
 		this.scoreLabel.height = 30;
 
+		// ADDING THE SEMI TRANSPARENT GAME OVER BACKGROUND
+
+
 		// ADDING THE CURSOR KEYS LISTENER
 		this.cursors = game.input.keyboard.createCursorKeys();
 
@@ -469,6 +479,43 @@ EndlessRunner.Game.prototype = {
 		this.obstacle2 = this.ring2;
 		this.obstacle3 = this.ring3;
 
+		// GETTING A RANDOM NUMBER TO CHECK IF THE FIRST OBSTACLE MUST CHANGE
+		var changeObstacle1 = Math.floor(Math.random() * 10);
+
+		// CHECKING IF THE FIRST OBSTACLE MUST CHANGE
+		if (changeObstacle1>3)
+			{
+			// CHANGING THE RING FOR AN ENEMY
+			this.obstacle1 = this.enemy1;
+			}
+
+		// GETTING A RANDOM NUMBER TO CHECK IF THE SECOND OBSTACLE MUST CHANGE
+		var changeObstacle2 = Math.floor(Math.random() * 10);
+
+		// CHECKING IF THE SECOND OBSTACLE MUST CHANGE
+		if (changeObstacle2>3)
+			{
+			// CHANGING THE RING FOR AN ENEMY
+			this.obstacle2 = this.enemy2;
+			}
+
+		// GETTING A RANDOM NUMBER TO CHECK IF THE THIRD OBSTACLE MUST CHANGE
+		var changeObstacle3 = Math.floor(Math.random() * 10);
+
+		// CHECKING IF THE THIRD OBSTACLE MUST CHANGE
+		if (changeObstacle3>3)
+			{
+			// CHANGING THE RING FOR AN ENEMY
+			this.obstacle3 = this.enemy3;
+			}
+
+		// CHECKING IF ALL THE OBSTACLES ARE ENEMIES
+		if (this.obstacle1.type=="enemy" && this.obstacle2.type=="enemy" && this.obstacle3.type=="enemy")
+			{
+			// IF THAT'S THE CASE, THE FIRST OBJECT WILL BE A RING
+			this.obstacle1 = this.ring1;
+			}
+
 		// LOCATING THE OBSTACLES
 		this.obstacle1.position.x = 138;
 		this.obstacle1.position.y = 290;
@@ -476,46 +523,62 @@ EndlessRunner.Game.prototype = {
 		this.obstacle2.position.y = 290;
 		this.obstacle3.position.x = 172;
 		this.obstacle3.position.y = 290;
+
+		// WAITING 500 MS
+		game.time.events.add(500, function()
+			{
+			// SHOWING THE OBSTACLES
+			game.state.states["EndlessRunner.Game"].obstacle1.visible = true;
+			game.state.states["EndlessRunner.Game"].obstacle2.visible = true;
+			game.state.states["EndlessRunner.Game"].obstacle3.visible = true;
+
+			// SETTING THAT THE SPLASH HAS ENDED
+			game.state.states["EndlessRunner.Game"].splashEnded = true;
+			});
 		},
 
 	update: function()
 		{
-		// CHECKING IF THE HERO IS MOVING AND HAS ALREADY ARRIVED TO HIS DESTINATION
-		if (this.moving==true && (this.hero.position.x==12 || this.hero.position.x==121 || this.hero.position.x==230))
+		// CHECKING IF THE GAME IS NOT OVER
+		if (this.isGameOver==false && this.splashEnded==true)
 			{
-			// SETTING THAT THE HERO IS NOT MOVING
-			this.moving = false;
-			}
-
-		// CHECKING IF THE HERO IS NOT MOVING
-		if (this.moving==false)
-			{
-			// DETECTING THE KEYS
-			var moveLeft = this.cursors.left.isDown || this.keyA.isDown;
-			var moveRight = this.cursors.right.isDown || this.keyD.isDown;
-
-			// CHECKING IF THE USER IS PRESSING THE LEFT KEY
-			if (moveLeft==true)
+			// CHECKING IF THE HERO IS MOVING AND HAS ALREADY ARRIVED TO HIS DESTINATION
+			if (this.moving==true && (this.hero.position.x==12 || this.hero.position.x==121 || this.hero.position.x==230))
 				{
-				// MOVING THE HERO TO THE LEFT
-				this.moveLeft();
+				// SETTING THAT THE HERO IS NOT MOVING
+				this.moving = false;
 				}
 
-			// CHECKING IF THE USER IS PRESSING THE RIGHT KEY
-			if (moveRight==true)
+			// CHECKING IF THE HERO IS NOT MOVING
+			if (this.moving==false)
 				{
-				// MOVING THE HERO TO THE RIGHT
-				this.moveRight();
+				// DETECTING THE KEYS
+				var moveLeft = this.cursors.left.isDown || this.keyA.isDown;
+				var moveRight = this.cursors.right.isDown || this.keyD.isDown;
+
+				// CHECKING IF THE USER IS PRESSING THE LEFT KEY
+				if (moveLeft==true)
+					{
+					// MOVING THE HERO TO THE LEFT
+					this.moveLeft();
+					}
+
+				// CHECKING IF THE USER IS PRESSING THE RIGHT KEY
+				if (moveRight==true)
+					{
+					// MOVING THE HERO TO THE RIGHT
+					this.moveRight();
+					}
 				}
+
+			// MOVING THE OBSTACLES
+			this.moveObstacles();
+
+			// SETTING THE FUNCTION THAT WILL BE CALLED WHEN THE HERO OVERLAPS AN OBSTACLE
+			game.physics.arcade.overlap(this.hero, this.obstacle1, this.checkCollision, null, this);
+			game.physics.arcade.overlap(this.hero, this.obstacle2, this.checkCollision, null, this);
+			game.physics.arcade.overlap(this.hero, this.obstacle3, this.checkCollision, null, this);
 			}
-
-		// MOVING THE OBSTACLES
-		this.moveObstacles();
-
-		// SETTING THE FUNCTION THAT WILL BE CALLED WHEN THE HERO OVERLAPS AN OBSTACLE
-		game.physics.arcade.overlap(this.hero, this.obstacle1, this.checkCollision, null, this);
-		game.physics.arcade.overlap(this.hero, this.obstacle2, this.checkCollision, null, this);
-		game.physics.arcade.overlap(this.hero, this.obstacle3, this.checkCollision, null, this);
 		},
 
 	moveLeft: function()
@@ -587,9 +650,9 @@ EndlessRunner.Game.prototype = {
 		if (this.obstacle1.position.y>game.height)
 			{
 			// GETTING A RANDOM NUMBER TO CHECK IF THE OBSTACLE MUST CHANGE
-			var changeObstacle = Math.floor(Math.random() * 10); 
+			var changeObstacle = Math.floor(Math.random() * 10);
 
-			// CHECKING IF THE OBSTACLE MUST
+			// CHECKING IF THE OBSTACLE MUST CHANGE
 			if (changeObstacle>3)
 				{
 				// CHECKING IF THE OBSTACLE IS A RING
@@ -617,9 +680,9 @@ EndlessRunner.Game.prototype = {
 		if (this.obstacle2.position.y>game.height)
 			{
 			// GETTING A RANDOM NUMBER TO CHECK IF THE OBSTACLE MUST CHANGE
-			var changeObstacle = Math.floor(Math.random() * 10); 
+			var changeObstacle = Math.floor(Math.random() * 10);
 
-			// CHECKING IF THE OBSTACLE MUST
+			// CHECKING IF THE OBSTACLE MUST CHANGE
 			if (changeObstacle>3)
 				{
 				// CHECKING IF THE OBSTACLE IS A RING
@@ -647,9 +710,9 @@ EndlessRunner.Game.prototype = {
 		if (this.obstacle3.position.y>game.height)
 			{
 			// GETTING A RANDOM NUMBER TO CHECK IF THE OBSTACLE MUST CHANGE
-			var changeObstacle = Math.floor(Math.random() * 10); 
+			var changeObstacle = Math.floor(Math.random() * 10);
 
-			// CHECKING IF THE OBSTACLE MUST
+			// CHECKING IF THE OBSTACLE MUST CHANGE
 			if (changeObstacle>3)
 				{
 				// CHECKING IF THE OBSTACLE IS A RING
