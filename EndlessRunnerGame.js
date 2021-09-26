@@ -260,7 +260,7 @@ EndlessRunner.Game.prototype = {
 		this.backgroundEnemyImage.height = 250;
 		this.backgroundEnemyImage.position.x = 320 / 2 - this.backgroundEnemyImage.width / 2;
 
-		// ADDING THE ENEMY HOLE
+		// ADDING THE BACKGROUND ENEMY HOLE
 		this.enemyHole = game.add.graphics(0, 0);
 		this.enemyHole.lineStyle(2, 0xffd900, 1);
 		this.enemyHole.beginFill(0x000000, 1);
