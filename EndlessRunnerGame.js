@@ -192,7 +192,7 @@ EndlessRunner.Game = function (game)
 	this.swipeMinDistance = null;
 	this.objectsMaxSpeed = null;
 	this.isGameOver = null;
-	this.splashEnded = false;
+	this.splashEnded = null;
 
 	// SCALING THE CANVAS SIZE FOR THE GAME
 	function resizeF()
