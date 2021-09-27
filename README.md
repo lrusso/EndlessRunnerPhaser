@@ -12,6 +12,6 @@ https://lrusso.github.io/EndlessRunnerPhaser/EndlessRunner.htm
 
 The Sonic The Hedgehog resources (images, music and sounds) are provided for educational purposes ONLY. This demo is not affiliated with or endorsed by their respective copyright holders.
 
-## 3D version at:
+## 3D version of this game available at:
 
 https://www.github.com/lrusso/EndlessRunner
