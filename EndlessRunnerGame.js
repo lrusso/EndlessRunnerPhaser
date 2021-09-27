@@ -24,7 +24,7 @@ if (userLanguage.substring(0,2)=="es")
 	}
 	else
 	{
-	STRING_HIGHSCORE = "HIGHSCORE";
+	STRING_HIGHSCORE = "HIGH SCORE";
 	STRING_YOURSCORE = "YOUR SCORE";
 	}
 
