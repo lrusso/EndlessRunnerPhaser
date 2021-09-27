@@ -1,6 +1,6 @@
 {
-	"name": "EndlessRunner",
-	"short_name": "EndlessRunner",
+	"name": "Endless Runner",
+	"short_name": "Endless Runner",
 	"lang": "en-US",
 	"start_url": "https://lrusso.github.io/EndlessRunnerPhaser/EndlessRunner.htm",
 	"display": "standalone",
