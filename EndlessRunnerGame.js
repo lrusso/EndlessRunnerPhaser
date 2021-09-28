@@ -483,22 +483,26 @@ EndlessRunner.Game.prototype = {
 		this.buttonSoundOnGame.inputEnabled = true;
 		this.buttonSoundOnGame.events.onInputUp.add(function()
 			{
-			// SETTING THAT THE SOUND IS DISABLED
-			GAME_SOUND_ENABLED = false;
-
-			// SHOWING THE SOUND OFF GAME ICON
-			this.buttonSoundOffGame.visible = true;
-			this.buttonSoundOffGameShadow.visible = true;
-
-			// HIDING THE SOUND ON GAME ICON
-			this.buttonSoundOnGame.visible = false;
-			this.buttonSoundOnGameShadow.visible = false;
-
-			// CHECKING IF THE MUSIC PLAYER IS CREATED
-			if (this.musicPlayer!=null)
+			// CHECKING IF THE GAME IS NOT OVER
+			if (this.isGameOver==false)
 				{
-				// PAUSING THE BACKGROUND MUSIC
-				this.musicPlayer.pause();
+				// SETTING THAT THE SOUND IS DISABLED
+				GAME_SOUND_ENABLED = false;
+
+				// SHOWING THE SOUND OFF GAME ICON
+				this.buttonSoundOffGame.visible = true;
+				this.buttonSoundOffGameShadow.visible = true;
+
+				// HIDING THE SOUND ON GAME ICON
+				this.buttonSoundOnGame.visible = false;
+				this.buttonSoundOnGameShadow.visible = false;
+
+				// CHECKING IF THE MUSIC PLAYER IS CREATED
+				if (this.musicPlayer!=null)
+					{
+					// PAUSING THE BACKGROUND MUSIC
+					this.musicPlayer.pause();
+					}
 				}
 			},this);
 
@@ -513,32 +517,36 @@ EndlessRunner.Game.prototype = {
 		this.buttonSoundOffGame.inputEnabled = true;
 		this.buttonSoundOffGame.events.onInputUp.add(function()
 			{
-			// SETTING THAT THE SOUND IS ENABLED
-			GAME_SOUND_ENABLED = true;
-
-			// SHOWING THE SOUND ON GAME ICON
-			this.buttonSoundOnGame.visible = true;
-			this.buttonSoundOnGameShadow.visible = true;
-
-			// HIDING THE SOUND OFF GAME ICON
-			this.buttonSoundOffGame.visible = false;
-			this.buttonSoundOffGameShadow.visible = false;
-
-			// CHECKING IF THE MUSIC PLAYER IS NOT CREATED
-			if (this.musicPlayer==null)
+			// CHECKING IF THE GAME IS NOT OVER
+			if (this.isGameOver==false)
 				{
-				// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
-				this.musicPlayer = this.add.audio("musicBackground");
+				// SETTING THAT THE SOUND IS ENABLED
+				GAME_SOUND_ENABLED = true;
 
-				// SETTING THE BACKGROUND MUSIC VOLUME
-				this.musicPlayer.volume = 0.3;
+				// SHOWING THE SOUND ON GAME ICON
+				this.buttonSoundOnGame.visible = true;
+				this.buttonSoundOnGameShadow.visible = true;
 
-				// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
-				this.musicPlayer.loop = true;
+				// HIDING THE SOUND OFF GAME ICON
+				this.buttonSoundOffGame.visible = false;
+				this.buttonSoundOffGameShadow.visible = false;
+
+				// CHECKING IF THE MUSIC PLAYER IS NOT CREATED
+				if (this.musicPlayer==null)
+					{
+					// SETTING THE AUDIO FILE THAT WILL BE PLAYED AS BACKGROUND MUSIC
+					this.musicPlayer = this.add.audio("musicBackground");
+
+					// SETTING THE BACKGROUND MUSIC VOLUME
+					this.musicPlayer.volume = 0.3;
+
+					// SETTING THAT THE BACKGROUND MUSIC WILL BE LOOPING
+					this.musicPlayer.loop = true;
+					}
+
+				// PLAYING THE BACKGROUND MUSIC
+				this.musicPlayer.play();
 				}
-
-			// PLAYING THE BACKGROUND MUSIC
-			this.musicPlayer.play();
 			},this);
 
 		// ADDING THE SCORE BACKGROUND
@@ -1042,6 +1050,10 @@ EndlessRunner.Game.prototype = {
 			this.roadRight.animations.stop();
 			this.backgroundOceanImage.animations.stop();
 			game.tweens.pauseAll();
+
+			// DISABLING THE SOUND HANDLER
+			this.buttonSoundOffGame.inputEnabled = false;
+			this.buttonSoundOnGame.inputEnabled = false;
 
 			// LOADING THE USER SCORE
 			this.gameOverScoreValue.text = this.scoreValue;
