@@ -470,7 +470,7 @@ EndlessRunner.Game.prototype = {
 		this.hero.animations.add("moveHero", [0, 1, 2, 3, 4, 3, 2, 1]);
 		this.hero.animations.play("moveHero", 12, true);
 		game.physics.arcade.enable(this.hero);
-		this.hero.body.setSize(45, 30, 15, 75);
+		this.hero.body.setSize(45, 30, 15, 65);
 
 		// ADDING THE SOUND ON GAME ICON
 		this.buttonSoundOnGameShadow = game.add.sprite(267, 12, "imageSoundOn");
@@ -849,7 +849,7 @@ EndlessRunner.Game.prototype = {
 	moveObstacles: function()
 		{
 		// GETTING HOW FAR THE FIRST OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
-		var obstacle1Factor = (this.obstacle1.position.y * 100 / game.height) / 100;
+		var obstacle1Factor = Math.floor(this.obstacle1.position.y * 100 / game.height) / 100;
 
 		// MOVING AND RESIZING THE FIRST OBSTACLE
 		this.obstacle1.position.x = this.obstacle1.position.x - (1.45 * obstacle1Factor);
@@ -858,7 +858,7 @@ EndlessRunner.Game.prototype = {
 		this.obstacle1.height = this.obstacle1.height + (0.5 * obstacle1Factor);
 
 		// GETTING HOW FAR THE SECOND OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
-		var obstacle2Factor = (this.obstacle2.position.y * 100 / game.height) / 100;
+		var obstacle2Factor = Math.floor(this.obstacle2.position.y * 100 / game.height) / 100;
 
 		// MOVING AND RESIZING THE SECOND OBSTACLE
 		this.obstacle2.position.x = this.obstacle2.position.x - (0.27 * obstacle2Factor);
@@ -867,7 +867,7 @@ EndlessRunner.Game.prototype = {
 		this.obstacle2.height = this.obstacle2.height + (0.55 * obstacle2Factor);
 
 		// GETTING HOW FAR THE THIRD OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
-		var obstacle3Factor = (this.obstacle3.position.y * 100 / game.height) / 100;
+		var obstacle3Factor = Math.floor(this.obstacle3.position.y * 100 / game.height) / 100;
 
 		// MOVING AND RESIZING THE THIRD OBSTACLE
 		this.obstacle3.position.x = this.obstacle3.position.x + (0.90 * obstacle3Factor);
