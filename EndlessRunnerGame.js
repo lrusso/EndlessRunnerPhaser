@@ -851,7 +851,7 @@ EndlessRunner.Game.prototype = {
 		// GETTING HOW FAR THE FIRST OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle1Factor = Math.floor(this.obstacle1.position.y * 100 / game.height) / 100;
 
-		// GETTING HOW BIG THE FIRST OBSTACLE SHOULD BE
+		// GETTING HOW BIG THE FIRST OBSTACLE WILL BE
 		var obstacle1Size = parseFloat(this.obstacle1.width + (0.5 * obstacle1Factor)).toFixed(1);
 
 		// MOVING AND RESIZING THE FIRST OBSTACLE (IF NECESSARY)
@@ -863,7 +863,7 @@ EndlessRunner.Game.prototype = {
 		// GETTING HOW FAR THE SECOND OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle2Factor = Math.floor(this.obstacle2.position.y * 100 / game.height) / 100;
 
-		// GETTING HOW BIG THE SECOND OBSTACLE SHOULD BE
+		// GETTING HOW BIG THE SECOND OBSTACLE WILL BE
 		var obstacle2Size = parseFloat(this.obstacle2.width + (0.55 * obstacle2Factor)).toFixed(1);
 
 		// MOVING AND RESIZING THE SECOND OBSTACLE
@@ -875,7 +875,7 @@ EndlessRunner.Game.prototype = {
 		// GETTING HOW FAR THE THIRD OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle3Factor = Math.floor(this.obstacle3.position.y * 100 / game.height) / 100;
 
-		// GETTING HOW BIG THE THIRD OBSTACLE SHOULD BE
+		// GETTING HOW BIG THE THIRD OBSTACLE WILL BE
 		var obstacle3Size = parseFloat(this.obstacle3.height + (0.55 * obstacle3Factor)).toFixed(1);
 
 		// MOVING AND RESIZING THE THIRD OBSTACLE
