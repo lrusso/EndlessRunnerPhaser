@@ -851,29 +851,38 @@ EndlessRunner.Game.prototype = {
 		// GETTING HOW FAR THE FIRST OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle1Factor = Math.floor(this.obstacle1.position.y * 100 / game.height) / 100;
 
-		// MOVING AND RESIZING THE FIRST OBSTACLE
+		// GETTING HOW BIG THE FIRST OBSTACLE SHOULD BE
+		var obstacle1Size = parseFloat(this.obstacle1.width + (0.5 * obstacle1Factor)).toFixed(1);
+
+		// MOVING AND RESIZING THE FIRST OBSTACLE (IF NECESSARY)
 		this.obstacle1.position.x = this.obstacle1.position.x - (1.45 * obstacle1Factor);
 		this.obstacle1.position.y = this.obstacle1.position.y + (3 * obstacle1Factor);
-		this.obstacle1.width = this.obstacle1.width + (0.5 * obstacle1Factor);
-		this.obstacle1.height = this.obstacle1.height + (0.5 * obstacle1Factor);
+		this.obstacle1.width = obstacle1Size;
+		this.obstacle1.height = obstacle1Size;
 
 		// GETTING HOW FAR THE SECOND OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle2Factor = Math.floor(this.obstacle2.position.y * 100 / game.height) / 100;
 
+		// GETTING HOW BIG THE SECOND OBSTACLE SHOULD BE
+		var obstacle2Size = parseFloat(this.obstacle2.width + (0.55 * obstacle2Factor)).toFixed(1);
+
 		// MOVING AND RESIZING THE SECOND OBSTACLE
 		this.obstacle2.position.x = this.obstacle2.position.x - (0.27 * obstacle2Factor);
 		this.obstacle2.position.y = this.obstacle2.position.y + (3 * obstacle2Factor);
-		this.obstacle2.width = this.obstacle2.width + (0.55 * obstacle2Factor);
-		this.obstacle2.height = this.obstacle2.height + (0.55 * obstacle2Factor);
+		this.obstacle2.width = obstacle2Size;
+		this.obstacle2.height = obstacle2Size;
 
 		// GETTING HOW FAR THE THIRD OBSTACLE ACTUALLY IS IN ORDER TO SET A PROPORTIONAL SPEED AND RESIZE
 		var obstacle3Factor = Math.floor(this.obstacle3.position.y * 100 / game.height) / 100;
 
+		// GETTING HOW BIG THE THIRD OBSTACLE SHOULD BE
+		var obstacle3Size = parseFloat(this.obstacle3.height + (0.55 * obstacle3Factor)).toFixed(1);
+
 		// MOVING AND RESIZING THE THIRD OBSTACLE
 		this.obstacle3.position.x = this.obstacle3.position.x + (0.90 * obstacle3Factor);
 		this.obstacle3.position.y = this.obstacle3.position.y + (3 * obstacle3Factor);
-		this.obstacle3.width = this.obstacle3.width + (0.55 * obstacle3Factor);
-		this.obstacle3.height = this.obstacle3.height + (0.55 * obstacle3Factor);
+		this.obstacle3.width = obstacle3Size;
+		this.obstacle3.height = obstacle3Size;
 
 		// CHECKING IF THE FIRST OBSTACLE IS OUT OF THE SCREEN
 		if (this.obstacle1.position.y>game.height)
