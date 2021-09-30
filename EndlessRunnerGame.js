@@ -573,7 +573,7 @@ EndlessRunner.Game.prototype = {
 
 		// ADDING THE GAME OVER BACKGROUND
 		this.gameOverBackground = game.add.graphics(0, 0);
-		this.gameOverBackground.beginFill(0x000000,0.5);
+		this.gameOverBackground.beginFill(0x000000,0.6);
 		this.gameOverBackground.drawRect(0, 0, game.width, game.height);
 		this.gameOverBackground.endFill();
 		this.gameOverBackground.visible = false;
@@ -1076,8 +1076,14 @@ EndlessRunner.Game.prototype = {
 			// CENTERING THE HIGH SCORE
 			this.gameOverHighScoreValue.position.x = game.width / 2 - this.gameOverHighScoreValue.width / 2;
 
+			// SETTING THE ALPHA VALUE FOR THE GAME OVER BACKGROUND AND LAYOUT
+			this.gameOverBackground.alpha = 0;
+
 			// SHOWING THE GAME OVER BACKGROUND AND LAYOUT
 			this.gameOverBackground.visible = true;
+
+			// FADING IN EFFECT FOR THE GAME OVER BACKGROUND AND LAYOUT
+			game.add.tween(this.gameOverBackground).to({alpha: 1}, 200, Phaser.Easing.Linear.None, true);
 			}
 		},
 
