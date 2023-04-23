@@ -13,17 +13,56 @@ function isMobileDevice(){return!!(navigator.userAgent.match(/Android/i)||naviga
 // GETTING THE USER LANGUAGE
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
+var STRING_DISCLAIMER1 = "";
+var STRING_DISCLAIMER2 = "";
+var STRING_DISCLAIMER3 = "";
+var STRING_DISCLAIMER4 = "";
+var STRING_DISCLAIMER5 = "";
+var STRING_DISCLAIMER6 = "";
+var STRING_DISCLAIMER7 = "";
+var STRING_DISCLAIMER8 = "";
+var STRING_DISCLAIMER9 = "";
+var STRING_DISCLAIMER10 = "";
+var STRING_DISCLAIMER11 = "";
+var STRING_DISCLAIMER12_DESKTOP = "";
+var STRING_DISCLAIMER12_MOBILE = "";
 var STRING_HIGHSCORE = "";
 var STRING_YOURSCORE = "";
 
 // CHECKING THE USER LANGUAGE
 if (userLanguage.substring(0,2)=="es")
 	{
+	STRING_DISCLAIMER1 = "DISCLAIMER";
+	STRING_DISCLAIMER2 = "Los recursos de Sonic";
+	STRING_DISCLAIMER3 = "(im" + String.fromCharCode(225) + "genes, fuentes, m" + String.fromCharCode(250) + "sica";
+	STRING_DISCLAIMER4 = "y sonidos) se proporcionan";
+	STRING_DISCLAIMER5 = "UNICAMENTE con fines";
+	STRING_DISCLAIMER6 = "educativos. Esta";
+	STRING_DISCLAIMER7 = "demostraci" + String.fromCharCode(243) + "n no est" + String.fromCharCode(225);
+	STRING_DISCLAIMER8 = "afiliada ni respaldada"
+	STRING_DISCLAIMER9 = "por sus respectivos";
+	STRING_DISCLAIMER10 = "titulares de derechos";
+	STRING_DISCLAIMER11 = "de autor.";
+	STRING_DISCLAIMER12_DESKTOP = "Haga click para continuar";
+	STRING_DISCLAIMER12_MOBILE = "Presione para continuar";
 	STRING_HIGHSCORE = "MEJOR PUNTAJE";
 	STRING_YOURSCORE = "TU PUNTAJE";
 	}
 	else
 	{
+	STRING_DISCLAIMER1 = "DISCLAIMER";
+	STRING_DISCLAIMER2 = "The Sonic resources";
+	STRING_DISCLAIMER3 = "(images, fonts, music";
+	STRING_DISCLAIMER4 = "and sounds) are provided";
+	STRING_DISCLAIMER5 = "for educational purposes";
+	STRING_DISCLAIMER6 = "ONLY. This demo is not";
+	STRING_DISCLAIMER7 = "affiliated with or endorsed";
+	STRING_DISCLAIMER8 = "by their respective";
+	STRING_DISCLAIMER9 = "copyright holders.";
+	STRING_DISCLAIMER10 = "";
+	STRING_DISCLAIMER11 = "";
+	STRING_DISCLAIMER12_DESKTOP = "Click to continue";
+	STRING_DISCLAIMER12_MOBILE = "Tap to continue";
 	STRING_HIGHSCORE = "HIGH SCORE";
 	STRING_YOURSCORE = "YOUR SCORE";
 	}
@@ -177,11 +216,148 @@ EndlessRunner.Splash.prototype = {
 				// WAITING 750 MS
 				game.time.events.add(750, function()
 					{
-					// STARTING THE GAME
-					game.state.start("EndlessRunner.Game", Phaser.Plugin.StateTransition.Out.SlideLeft);
+					// LOADING THE GAME DISCLAIMER
+					game.state.start("EndlessRunner.Disclaimer", Phaser.Plugin.StateTransition.Out.SlideLeft);
 					});
 				});
 			});
+		}
+	};
+
+EndlessRunner.Disclaimer = function(){};
+
+EndlessRunner.Disclaimer.prototype = {
+
+	init: function()
+		{
+		this.line1 = null;
+		this.line2 = null;
+		this.line3 = null;
+		this.line4 = null;
+		this.line5 = null;
+		this.line6 = null;
+		this.line7 = null;
+		this.line8 = null;
+		this.line9 = null;
+		this.line10 = null;
+		this.line11 = null;
+		this.line12 = null;
+		this.marginY = 40;
+		this.clickTimestamp = null;
+		this.clickPositionX = null;
+		this.clickPositionY = null;
+		},
+
+	create: function()
+		{
+		// SETTING THE BACKGROUND COLOR
+		this.stage.backgroundColor = "#000000";
+
+		// ADDING THE DISCLAIMER LINE 1
+		this.line1 = game.add.bitmapText(0, this.marginY + 20, "ArialBlackWhite", STRING_DISCLAIMER1, 20);
+		this.line1.height = 25;
+		this.line1.tint = 0xFF0000;
+		this.line1.position.x = game.width / 2 - this.line1.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 2
+		this.line2 = game.add.bitmapText(0, this.marginY + 90, "ArialBlackWhite", STRING_DISCLAIMER2, 20);
+		this.line2.height = 25;
+		this.line2.position.x = game.width / 2 - this.line2.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 3
+		this.line3 = game.add.bitmapText(0, this.marginY + 130, "ArialBlackWhite", STRING_DISCLAIMER3, 20);
+		this.line3.height = 25;
+		this.line3.position.x = game.width / 2 - this.line3.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 4
+		this.line4 = game.add.bitmapText(0, this.marginY + 170, "ArialBlackWhite", STRING_DISCLAIMER4, 20);
+		this.line4.height = 25;
+		this.line4.position.x = game.width / 2 - this.line4.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 5
+		this.line5 = game.add.bitmapText(0, this.marginY + 210, "ArialBlackWhite", STRING_DISCLAIMER5, 20);
+		this.line5.height = 25;
+		this.line5.position.x = game.width / 2 - this.line5.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 6
+		this.line6 = game.add.bitmapText(0, this.marginY + 250, "ArialBlackWhite", STRING_DISCLAIMER6, 20);
+		this.line6.height = 25;
+		this.line6.position.x = game.width / 2 - this.line6.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 7
+		this.line7 = game.add.bitmapText(0, this.marginY + 290, "ArialBlackWhite", STRING_DISCLAIMER7, 20);
+		this.line7.height = 25;
+		this.line7.position.x = game.width / 2 - this.line7.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 8
+		this.line8 = game.add.bitmapText(0, this.marginY + 330, "ArialBlackWhite", STRING_DISCLAIMER8, 20);
+		this.line8.height = 25;
+		this.line8.position.x = game.width / 2 - this.line8.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 9
+		this.line9 = game.add.bitmapText(0, this.marginY + 370, "ArialBlackWhite", STRING_DISCLAIMER9, 20);
+		this.line9.height = 25;
+		this.line9.position.x = game.width / 2 - this.line9.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 10
+		this.line10 = game.add.bitmapText(0, this.marginY + 410, "ArialBlackWhite", STRING_DISCLAIMER10, 20);
+		this.line10.height = 25;
+		this.line10.position.x = game.width / 2 - this.line10.width / 2;
+
+		// ADDING THE DISCLAIMER LINE 11
+		this.line11 = game.add.bitmapText(0, this.marginY + 450, "ArialBlackWhite", STRING_DISCLAIMER11, 20);
+		this.line11.height = 25;
+		this.line11.position.x = game.width / 2 - this.line11.width / 2;
+
+		// CHECKING IF IT IS A MOBILE DEVICE
+		if (isMobileDevice()==true)
+			{
+			// ADDING THE DISCLAIMER LINE 8 FOR MOBILE DEVICES
+			this.line12 = game.add.bitmapText(0, this.marginY + 500, "ArialBlackWhite", STRING_DISCLAIMER12_MOBILE, 20);
+			this.line12.height = 25;
+			this.line12.tint = 0x228B22;
+			this.line12.position.x = game.width / 2 - this.line12.width / 2;
+			}
+			else
+			{
+			// ADDING THE DISCLAIMER LINE 8 FOR DESKTOP DEVICES
+			this.line12 = game.add.bitmapText(0, this.marginY + 500, "ArialBlackWhite", STRING_DISCLAIMER12_DESKTOP, 20);
+			this.line12.height = 25;
+			this.line12.tint = 0x228B22;
+			this.line12.position.x = game.width / 2 - this.line12.width / 2;
+			}
+
+		// SETTING THAT WILL HAPPEN WHEN THE USER STARTS TOUCHING THE SCREEN OR MOUSE DOWN
+		this.game.input.onDown.add(function()
+			{
+			// CHECKING IF THERE ISN'T A CLICK TIMESTAMP VALUE
+			if (this.clickTimestamp==null)
+				{
+				// SETTING THE CLICK TIMESTAMP VALUE
+				this.clickTimestamp = this.getCurrentTime();
+
+				// SETTING THE INITIAL MOUSE OR FINGER POSITION
+				this.clickPositionX = this.game.input.activePointer.position.x;
+				this.clickPositionY = this.game.input.activePointer.position.y;
+				}
+			}, this);
+
+		// SETTING THAT WILL HAPPEN WHEN THE USER STOPS TOUCHING THE SCREEN OR MOUSE UP
+		this.game.input.onUp.add(function()
+			{
+			// REJECTING ANY SLIDE AND LONG PRESS EVENT - BUGFIX FOR SAFARI ON IOS FOR ENABLING THE AUDIO CONTEXT
+			if (Math.abs(this.game.input.activePointer.position.x-this.clickPositionX)>=25){this.clickTimestamp=null;return;}
+			if (Math.abs(this.game.input.activePointer.position.y-this.clickPositionY)>=25){this.clickTimestamp=null;return;}
+			if (this.getCurrentTime()-this.clickTimestamp>=500){this.clickTimestamp=null;return;}
+
+			// LOADING THE GAME
+			game.state.start("EndlessRunner.Game", Phaser.Plugin.StateTransition.Out.SlideLeft);
+			}, this);
+		},
+
+	getCurrentTime: function()
+		{
+		return window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
 		}
 	};
 
@@ -1216,6 +1392,7 @@ var game = new Phaser.Game(config);
 
 // CREATING THE STATES
 game.state.add("EndlessRunner.Preloader", EndlessRunner.Preloader);
+game.state.add("EndlessRunner.Disclaimer", EndlessRunner.Disclaimer);
 game.state.add("EndlessRunner.Splash", EndlessRunner.Splash);
 game.state.add("EndlessRunner.Game", EndlessRunner.Game);
 
